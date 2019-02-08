@@ -35,7 +35,6 @@ data FrontendRoute :: * -> * where
   FrontendRoute_Main :: FrontendRoute ()
   -- This type is used to define frontend routes, i.e. ones for which the
   -- backend will serve the frontend.
-  FrontendRoute_Add :: FrontendRoute ()
 
 backendRouteEncoder ::
   Encoder (Either Text) Identity
@@ -48,7 +47,6 @@ backendRouteEncoder = handleEncoder (const (InL BackendRoute_Missing :/ ())) $
       -- The encoder given to PathEnd determines how to parse query parameters,
       -- in this example, we have none, so we insist on it.
       FrontendRoute_Main -> PathEnd $ unitEncoder mempty
-      FrontendRoute_Add -> PathEnd $ undefined
 
 concat <$> mapM deriveRouteComponent
   [ ''BackendRoute
