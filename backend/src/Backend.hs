@@ -10,11 +10,11 @@ import Common.Api
 import Common.Route
 import Control.Concurrent (forkIO)
 import Network.Wai (Application)
-import Network.Wai.Handler.Warp (run)
 import Obelisk.Backend
 import Servant ((:<|>) (..), Proxy (..), Server)
 
 import qualified Servant as Servant
+import qualified Network.Wai.Handler.Warp as Warp
 
 api :: Proxy Api
 api = Proxy
@@ -36,6 +36,6 @@ backend = Backend
 
 mainBackend :: IO ()
 mainBackend = do
-  _ <- forkIO $ run 8081 app
+  _ <- forkIO $ Warp.run 8081 app
   runBackend backend frontend
 
