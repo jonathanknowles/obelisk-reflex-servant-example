@@ -10,6 +10,8 @@ library
                , obelisk-frontend
                , obelisk-route
                , reflex-dom
+               , servant
+               , servant-client
                , obelisk-generated-static
                , text
   exposed-modules:
