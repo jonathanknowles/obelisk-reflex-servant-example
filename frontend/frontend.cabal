@@ -12,6 +12,7 @@ library
                , reflex-dom
                , servant
                , servant-client
+               , servant-reflex
                , obelisk-generated-static
                , text
   exposed-modules:
