@@ -36,6 +36,7 @@ backend = Backend
 
 mainBackend :: IO ()
 mainBackend = do
+  -- TODO: There is almost certainly a better and/or safer way of doing this:
   _ <- forkIO $ Warp.run 8081 app
   runBackend backend frontend
 
