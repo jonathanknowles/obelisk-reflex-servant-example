@@ -4,6 +4,7 @@
 module Common.Api where
 import Data.Text
 import Servant.API ((:>), (:<|>) (..), Capture, Get, JSON)
+import Data.Proxy (Proxy (..))
 
 commonStuff :: String
 commonStuff =
@@ -18,3 +19,6 @@ type Sub =
   "sub" :> Capture "x" Integer :> Capture "y" Integer :> Get '[JSON] Integer
 
 type Echo = "echo" :> Get '[JSON] Text
+
+api :: Proxy Api
+api = Proxy

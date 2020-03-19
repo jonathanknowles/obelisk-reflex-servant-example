@@ -13,13 +13,10 @@ import Common.Route
 import Obelisk.Route
 import Obelisk.Backend
 
-import Data.Proxy (Proxy (..))
 import Servant.API ((:<|>) (..))
 import Servant (serveSnap, Server)
 import Snap.Core (MonadSnap)
 
-api :: Proxy Api
-api = Proxy
 
 server :: MonadSnap m => Server Api l m
 server = add :<|> sub :<|> echo
