@@ -15,10 +15,17 @@ project ./. ({ pkgs, ... }: {
       rev    = "ec8723351c8245f29a88cc5e6250533d2d6f4761";
       sha256 = "1r8z95hpl6f5pql1f6a3plczahym09fdnxkcg3a6ildw6chmips0";
     };
+    servant-snap = pkgs.fetchFromGitHub {
+      owner  = "haskell-servant";
+      repo   = "servant-snap";
+      rev    = "af5172a6de5bb2a07eb1bf4c85952075ec6ecdf3";
+      sha256 = "0973iq3gc36qhiqnf5vp5djqsrz70srw1r7g73v8wamw04dx0g3z";
+    };
   };
 
   overrides = self: super: with pkgs.haskell.lib; {
     servant-reflex = doJailbreak super.servant-reflex;
+    hspec-snap     = dontCheck (self.callHackage "hspec-snap" "1.0.1.0" { });
   };
   shellToolOverrides = ghc: super: {
     ghcide = pkgs.haskell.lib.dontCheck ((ghc.override {

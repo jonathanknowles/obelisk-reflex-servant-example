@@ -9,7 +9,6 @@ library
                , obelisk-route
                , mtl
                , servant
-               , servant-server
                , text
 
   exposed-modules:
