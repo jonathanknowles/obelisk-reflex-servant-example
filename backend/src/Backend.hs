@@ -3,40 +3,39 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE OverloadedStrings #-}
+
 module Backend where
 
 import Frontend
 import Common.Api
 import Common.Route
-import Control.Concurrent (forkIO)
-import Network.Wai (Application)
+import Obelisk.Route
 import Obelisk.Backend
-import Servant ((:<|>) (..), Proxy (..), Server)
 
-import qualified Servant as Servant
-import qualified Network.Wai.Handler.Warp as Warp
+import Servant.API ((:<|>) (..))
+import Servant (serveSnap, Server)
+import Snap.Core (MonadSnap)
 
-api :: Proxy Api
-api = Proxy
 
-server :: Server Api
-server = add :<|> sub
+server :: MonadSnap m => Server Api l m
+server = add :<|> sub :<|> echo
   where
     add x y = return (x + y)
     sub x y = return (x - y)
+    echo = return "echo"
 
-app :: Application
-app = Servant.serve api server
+apiServer :: MonadSnap m => m ()
+apiServer = serveSnap api server
 
 backend :: Backend BackendRoute FrontendRoute
 backend = Backend
-  { _backend_run = \serve -> serve $ const $ return ()
-  , _backend_routeEncoder = backendRouteEncoder
+  { _backend_run = \serve -> serve $ \case
+      (BackendRoute_Api     :/ _)  -> apiServer
+      (BackendRoute_Missing :/ ()) -> return ()
+  , _backend_routeEncoder = fullRouteEncoder
   }
 
 mainBackend :: IO ()
 mainBackend = do
-  -- TODO: There is almost certainly a better and/or safer way of doing this:
-  _ <- forkIO $ Warp.run 8081 app
   runBackend backend frontend
-

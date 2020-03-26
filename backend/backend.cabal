@@ -12,8 +12,10 @@ library
                , frontend
                , obelisk-backend
                , obelisk-route
-               , wai
-               , warp
+               , servant
+               , servant-snap
+               , snap-core
+
   exposed-modules:
     Backend
   ghc-options: -Wall
